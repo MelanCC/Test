@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>keyboard</title>
+</head>
+<body>
+<button id="createRect">create</button>
+	<div id="contain">
+	</div>
+</body>
+<script type="text/javascript">
+	var SVG_NS="http://www.w3.org/2000/svg";
+	var svg=createSVG();
+	var $contain=document.getElementById("contain");
+	var rect="width:50,height:50,rx:3,ry:3";
+	var $location={x:200,y:100};
+	var defaultAttrs ="fill:white,stroke-width:1,stroke:black";
+	var letters=new Array('~,1,2,3,4,5,6,7,8,9,0,-,=,＼,←',
+						'Q,W,E,R,T,Y,U,I,O,P,{,}',	
+						'A,S,D,F,G,H,J,K,L,:,"',
+						'Z,X,C,V,B,N,M,<,>,?');
+						
+	
+	function createSVG()
+	{
+		var $svg=document.createElementNS(SVG_NS,'svg');
+		$svg.setAttribute('width','1600');
+		$svg.setAttribute('height','1000');
+		console.log($svg);
+		console.log(document.getElementById("contain"));
+		document.getElementById("contain").appendChild($svg);
+		return $svg;
+	}
+	function createRect(x,y,letter)
+	{
+		var shape =document.createElementNS(SVG_NS,'rect');
+		svg.appendChild(shape);
+
+		//设置长宽
+		var attrs=rect.split(",");
+		while(attrs.length)
+		{
+			var attr=attrs.shift().split(":");
+			
+			shape.setAttribute(attr[0],attr[1]);
+		}
+		//设置坐标
+		shape.setAttribute("x",$location.x+x);
+		shape.setAttribute('y',$location.y+y);
+		attrs=defaultAttrs.split(",");
+		//设置属性
+		var  $text='<text x="'+($location.x+x+10)+'" y="'+($location.y+y+20)+'" style="fill:black">'+letter+'</text>';
+		
+		while(attrs.length)
+		{
+			var attr=attrs.shift().split(":");
+			shape.setAttribute(attr[0],attr[1]);
+		}
+		
+		svg.innerHTML=svg.innerHTML+$text;
+		
+	}
+	
+	function createLetter(x,y,width,height,rx,ry,letter)
+	{
+		var shape =document.createElementNS(SVG_NS,'rect');
+		svg.appendChild(shape);
+		shape.setAttribute("x",x);
+		shape.setAttribute("y",y);
+		shape.setAttribute("width",width);
+		shape.setAttribute("height",height);
+		shape.setAttribute("rx",rx);
+		shape.setAttribute("ry",ry);
+ 		var	attrs=defaultAttrs.split(",");
+		while(attrs.length)
+		{
+			var attr=attrs.shift().split(":");
+			shape.setAttribute(attr[0],attr[1]);
+		}
+		var  $text='<text x="'+(x+10)+'" y="'+(y+20)+'" style="fill:black">'+letter+'</text>';
+		svg.innerHTML=svg.innerHTML+$text;
+	}
+	function createPolygon(points,letter)
+	{
+		var shape =document.createElementNS(SVG_NS,'polygon');
+		svg.appendChild(shape);
+	
+ 		var	attrs=defaultAttrs.split(",");
+		while(attrs.length)
+		{
+			var attr=attrs.shift().split(":");
+			shape.setAttribute(attr[0],attr[1]);
+		}
+		shape.setAttribute("points",points);
+ 		var  $text='<text x="'+(980+10)+'" y="'+(220+20)+'" style="fill:black">'+letter+'</text>';
+		svg.innerHTML=svg.innerHTML+$text;
+	}
+	document.getElementById("createRect").addEventListener('click',function(){
+		var x=0;
+		var y=0;
+		var i=1;
+		while(letters.length)
+		{
+			var lets=letters.shift().split(",");
+			while(lets.length)
+			{
+				
+				 createRect(x,y,lets.shift());
+				 x=x+60;
+			}
+			y=y+60;
+			x=60+i*30;
+			i++;
+		}
+		//Tab
+		createLetter(200,160,80,50,3,3,"Tab");
+		//Caps Lock
+		createLetter(200,220,110,50,3,3,"Caps Lock");
+		//left Shift
+		createLetter(200,280,140,50,3,3,"Shift");
+		//1010,160;1090,160; 1090,270;930,270  ;930,220 ;1010,220
+		//Enter
+		createPolygon("1010,160 1090,160 1090,270 980,270  980,220 1010,220","Enter");
+		//right Shift
+		createLetter(950,280,140,50,3,3,"Shift");
+		//Left Ctrl
+		createLetter(200,340,75,50,3,3,"Ctrl");
+		//Windows
+		createLetter(285,340,75,50,3,3,"Win");
+		// left Alt
+		createLetter(370,340,75,50,3,3,"Alt");
+		
+// 		//right Ctrl
+// 		createLetter(1015,340,75,50,3,3"Ctrl");
+		
+		
+		
+	})
+</script>
+</html>

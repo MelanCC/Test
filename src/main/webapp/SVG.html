@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>keyboard</title>
+</head>
+<body>
+<button id="createRect">create</button>
+	<div id="contain">
+	</div>
+</body>
+<script type="text/javascript">
+	var SVG_NS="http://www.w3.org/2000/svg";
+	var svg=createSVG();
+	var $contain=document.getElementById("contain");
+	var rect="width:50,height:50,rx:3,ry:3";
+	var $location={x:200,y:100};
+	var defaultAttrs ="fill:white,stroke-width:1,stroke:black";
+	
+	function createSVG()
+	{
+		var $svg=document.createElementNS(SVG_NS,'svg');
+		$svg.setAttribute('width','1600');
+		$svg.setAttribute('height','1000');
+		console.log($svg);
+		console.log(document.getElementById("contain"));
+		document.getElementById("contain").appendChild($svg);
+		return $svg;
+	}
+	function createRect(x,y)
+	{
+		var shape =document.createElementNS(SVG_NS,'rect');
+		svg.appendChild(shape);
+		//设置长宽
+		var attrs=rect.split(",");
+		while(attrs.length)
+		{
+			var attr=attrs.shift().split(":");
+			
+			shape.setAttribute(attr[0],attr[1]);
+		}
+		//设置坐标
+		shape.setAttribute("x",$location.x+x);
+		shape.setAttribute('y',$location.y+y);
+		attrs=defaultAttrs.split(",");
+		//设置属性
+		while(attrs.length)
+		{
+			var attr=attrs.shift().split(":");
+			shape.setAttribute(attr[0],attr[1]);
+		}
+	}
+	document.getElementById("createRect").addEventListener('click',function(){
+		 createRect(0,0);
+		 createRect(60,0);
+		
+	})
+</script>
+</html>
